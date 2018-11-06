@@ -1,0 +1,239 @@
+needCalibRegistry: true
+
+camera: ../ztf/camera
+defects: ../ztf/defects
+
+skytiles:
+  resolutionPix: 700
+  paddingArcsec: 10.0
+
+levels:
+  skyTile:
+  - visit
+  - ccd
+  tract: patch
+  visit: ccd
+  sensor: none
+
+defaultLevel: sensor
+
+defaultSubLevels:
+  skyTile: sensor
+  visit: sensor
+  sensor: none
+
+# exposures and datasets which are needed for all of the mappers are defined
+# in the obs_base package (in either exposures.yaml or datasets.yaml).
+# Where a modification to such a dataset is required for a particular camera,
+# (e.g., for a template or specialized python type), the modification will
+# appear below as a partial dataset definition.
+
+exposures:
+  raw:
+    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits'
+  postISRCCD:
+    template: 'postISRCCD/v%(visit)07d-f%(filter)s/c%(ccd)02d.fits'
+  icExp:
+    template: '%(pointing)05d/%(filter)s/corr/ICEXP-%(visit)07d-%(ccd)02d.fits'
+  calexp:
+    template: '%(pointing)05d/%(filter)s/corr/CORR-%(visit)07d-%(ccd)02d.fits'
+
+calibrations:
+  bias:
+    columns:
+    - ccd
+    - taiObs
+    level: Ccd
+    persistable: ImageF
+    python: lsst.afw.image.ImageF
+    refCols:
+    - visit
+    - filter
+    reference: raw_visit
+    storage: FitsStorage
+    tables: bias
+    template: BIAS/%(calibDate)s/NONE/BIAS-%(calibDate)s-%(ccd)02d.fits
+    validEndName: validEnd
+    validRange: true
+    validStartName: validStart
+  dark:
+    columns:
+    - ccd
+    - taiObs
+    level: Ccd
+    persistable: ImageF
+    python: lsst.afw.image.ImageF
+    refCols:
+    - visit
+    - filter
+    reference: raw_visit
+    storage: FitsStorage
+    tables: dark
+    template: DARK/%(calibDate)s/NONE/DARK-%(calibDate)s-%(ccd)02d.fits
+    validEndName: validEnd
+    validRange: true
+    validStartName: validStart
+  flat:
+    columns:
+    - ccd
+    - filter
+    - taiObs
+    filter: true
+    level: Ccd
+    persistable: MaskedImageF
+    python: lsst.afw.image.MaskedImageF
+    refCols:
+    - visit
+    - filter
+    reference: raw_visit
+    storage: FitsStorage
+    tables: flat
+    template: FLAT/%(calibDate)s/%(filter)s/FLAT-%(calibDate)s-%(filter)s-%(ccd)02d.fits
+    validEndName: validEnd
+    validRange: true
+    validStartName: validStart
+  fringe:
+    columns:
+    - ccd
+    - filter
+    - taiObs
+    filter: true
+    level: Ccd
+    persistable: ExposureF
+    python: lsst.afw.image.ExposureF
+    refCols:
+    - visit
+    - filter
+    reference: raw_visit
+    storage: FitsStorage
+    tables: fringe
+    template: FRINGE/%(calibDate)s/%(filter)s/FRINGE-%(calibDate)s-%(filter)s-%(ccd)02d.fits
+    validEndName: validEnd
+    validRange: true
+    validStartName: validStart
+  bfKernel:
+    level: None
+    persistable: ignored
+    python: numpy.ndarray
+    storage: PickleStorage
+    template: BFKERNEL/brighter_fatter_kernel.pkl
+
+datasets:
+  icExpBackground:
+    template: '%(pointing)05d/%(filter)s/corr/ICEXPBKGD-%(visit)07d-%(ccd)02d.fits'
+  calexpBackground:
+    template: '%(pointing)05d/%(filter)s/corr/BKGD-%(visit)07d-%(ccd)02d.fits'
+  src:
+    template: '%(pointing)05d/%(filter)s/output/SRC-%(visit)07d-%(ccd)02d.fits'
+  calibrated_src:
+    persistable: SourceCatalog
+    python: lsst.afw.table.SourceCatalog
+    storage: FitsCatalogStorage
+    tables:
+    - raw
+    - raw_visit
+    template: '%(pointing)05d/%(filter)s/output/%(tract)04d/CALSRC-%(visit)07d-%(ccd)02d.fits'
+  transformed_src:
+    persistable: SourceCatalog
+    python: lsst.afw.table.BaseCatalog
+    storage: FitsCatalogStorage
+    tables:
+    - raw
+    - raw_visit
+    template: '%(pointing)05d/%(filter)s/output/TRSRC-%(visit)07d-%(ccd)02d.fits'
+  icMatch:
+    persistable: BaseCatalog
+    python: lsst.afw.table.BaseCatalog
+    storage: FitsCatalogStorage
+    tables:
+    - raw
+    - raw_visit
+    template: '%(pointing)05d/%(filter)s/output/MATCH-%(visit)07d-%(ccd)02d.fits'
+  srcMatch:
+    template: '%(pointing)05d/%(filter)s/output/SRCMATCH-%(visit)07d-%(ccd)02d.fits'
+  srcMatchFull:
+    template: '%(pointing)05d/%(filter)s/output/SRCMATCHFULL-%(visit)07d-%(ccd)02d.fits'
+  icSrc:
+    template: '%(pointing)05d/%(filter)s/output/ICSRC-%(visit)07d-%(ccd)02d.fits'
+  photoCalib:
+    template: jointcal-results/%(tract)04d/photoCalib-%(visit)07d-%(ccd)02d.fits
+  log:
+    persistable: None
+    python: str
+    storage: TextStorage
+    template: '%(pointing)05d/%(filter)s/logs/run.log'
+  logDir:
+    persistable: None
+    python: str
+    storage: None
+    template: '%(pointing)05d/%(filter)s/logs'
+  deepCoadd_diffsrc:
+    persistable: SourceCatalog
+    python: lsst.afw.table.SourceCatalog
+    storage: FitsCatalogStorage
+    tables: raw_skytile
+    template: deepCoadd-diff/%(filter)s/%(tract)d/diffsrc-%(filter)s-%(tract)d-%(patch)s.fits
+  deepCoadd_tempExp_diffsrc:
+    persistable: SourceCatalog
+    python: lsst.afw.table.SourceCatalog
+    storage: FitsCatalogStorage
+    tables: raw_skytile
+    template: deepCoadd-diff/%(filter)s/%(tract)d/%(patch)s/diffsrc-%(filter)s-%(tract)d-%(patch)s-%(visit)d.fits
+  warppsf:
+    persistable: Psf
+    python: lsst.afw.detection.Psf
+    storage: BoostStorage
+    tables: raw_skytile
+    template: '%(pointing)05d/%(filter)s/warp/WARPPSF-%(visit)07d-%(ccd)02d.boost'
+  processCcd_metadata:
+    template: '%(pointing)05d/%(filter)s/processCcd_metadata/%(visit)07d-%(ccd)02d.boost'
+  isr_metadata:
+    template: '%(pointing)05d/%(filter)s/isr_metadata/%(visit)07d-%(ccd)02d.boost'
+  characterizeImage_metadata:
+    template: '%(pointing)05d/%(filter)s/characterizeImage_metadata/%(visit)07d-%(ccd)02d.boost'
+  calibrate_metadata:
+    template: '%(pointing)05d/%(filter)s/calibrate_metadata/%(visit)07d-%(ccd)02d.boost'
+  transformSrcMeasurement_metadata:
+    persistable: PropertySet
+    python: lsst.daf.base.PropertySet
+    storage: BoostStorage
+    tables:
+    - raw
+    - raw_visit
+    template: '%(pointing)05d/%(filter)s/transformSrcMeasurement_metadata/%(visit)07d-%(ccd)02d.boost'
+  singleFrameDriver_metadata:
+    persistable: PropertySet
+    python: lsst.daf.base.PropertySet
+    storage: BoostStorage
+    tables:
+    - raw
+    - raw_visit
+    template: '%(pointing)05d/%(filter)s/singleFrameDriver_metadata/%(visit)07d.boost'
+  processStack_metadata:
+    persistable: PropertySet
+    python: lsst.daf.base.PropertySet
+    storage: BoostStorage
+    tables:
+    - raw
+    - raw_visit
+    template: stack/%(stack)05d/processStack_metadata/%(patch)08d%(filter)s.boost
+  deepCoadd_measMatch:
+    template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatch-%(filter)s-%(tract)d-%(patch)s.fits
+  deepCoadd_measMatchFull:
+    template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/srcMatchFull-%(filter)s-%(tract)d-%(patch)s.fits
+  deepCoadd_calexp_hsc:
+    level: None
+    persistable: ExposureF
+    python: lsst.afw.image.ExposureF
+    storage: FitsStorage
+    tables:
+    - raw
+    - raw_skyTile
+    template: deepCoadd/%(filter)s/%(tract)d/%(patch)s/calexp-%(filter)s-%(tract)d-%(patch)s.fits
+  deepCoadd_calexp_background:
+    template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/det_bkgd-%(filter)s-%(tract)d-%(patch)s.fits
+  forced_src:
+    template: '%(pointing)05d/%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)07d-%(ccd)02d.fits'
+  forcedPhotCcd_metadata:
+    template: '%(pointing)05d/%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)07d-%(ccd)02d.boost'
+

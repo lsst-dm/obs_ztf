@@ -1,0 +1,13 @@
+setupRequired(afw)
+setupRequired(daf_base)
+setupRequired(obs_base)
+setupRequired(pex_config)
+setupRequired(pex_policy)
+setupRequired(pipe_tasks)
+setupRequired(python_future)
+setupRequired(numpy)
+setupRequired(skypix)
+setupRequired(utils)
+
+envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
+envPrepend(PATH, ${PRODUCT_DIR}/bin)
