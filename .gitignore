@@ -1,3 +1,7 @@
 *.pyc
 .DS_Store
 .scon*
+config.log
+bin
+ups/*.cfgc
+python/lsst/obs/ztf/version.py
