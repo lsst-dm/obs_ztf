@@ -29,9 +29,34 @@ defaultSubLevels:
 # appear below as a partial dataset definition.
 
 exposures:
+#  raw:
+#    python: lsst.afw.image.ExposureF
+#    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits'
+  _raw:
+    level: Ccd
+    persistable: PropertyList
+    python: lsst.daf.base.PropertyList
+    storage: FitsStorage
+    tables: raw
+    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits[0]'
   raw:
-    python: lsst.afw.image.ExposureF
-    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits'
+    assembler: lsst.obs.ztf.ztfMapper.assemble_raw
+    python: lsst.afw.image.DecoratedImageF
+    composite:
+      raw_amp:
+        datasetType: raw_amp
+        subset: true
+      raw_hdu:
+        datasetType: raw_hdu
+    inputOnly: true
+  raw_amp:
+    level: Amp
+    # NB If type is changed to an exposureI then constructDark breaks. If changing this be sure to test calibs
+    persistable: DecoratedImageF
+    python: lsst.afw.image.DecoratedImageF
+    storage: FitsStorage
+    tables: raw
+    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits[%(channel)d]'
   postISRCCD:
     template: 'postISRCCD/v%(visit)07d-f%(filter)s/c%(ccd)02d.fits'
   icExp:
@@ -120,6 +145,13 @@ calibrations:
     template: BFKERNEL/brighter_fatter_kernel.pkl
 
 datasets:
+  raw_hdu:
+    level: Ccd
+    persistable: PropertyList
+    python: lsst.daf.base.PropertyList
+    storage: FitsStorage
+    tables: raw
+    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits[0]'
   icExpBackground:
     template: '%(pointing)05d/%(filter)s/corr/ICEXPBKGD-%(visit)07d-%(ccd)02d.fits'
   calexpBackground:
