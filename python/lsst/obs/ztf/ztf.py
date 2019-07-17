@@ -19,19 +19,3 @@
 # the GNU General Public License along with this program.  If not,
 # see <http://www.lsstcorp.org/LegalNotices/>.
 #
-import os.path
-import lsst.utils as utils
-from lsst.obs.base.yamlCamera import YamlCamera
-
-class Ztf(YamlCamera):
-    """The ZTF Imager on the Palomar 48" Schmidt
-    """
-    packageName = 'obs_ztf'
-
-    def __init__(self, cameraYamlFile=None):
-        """Construct Ztf
-        """
-        if not cameraYamlFile:
-            cameraYamlFile = os.path.join(utils.getPackageDir(self.packageName), "policy", "camera.yaml")
-
-        YamlCamera.__init__(self, cameraYamlFile)

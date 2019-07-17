@@ -20,39 +20,26 @@
 # see <http://www.lsstcorp.org/LegalNotices/>.
 #
 import os
+import lsst.utils
 import lsst.daf.persistence as dafPersistence
 import lsst.afw.image.utils as afwImageUtils
-#import lsst.afw.geom as afwGeom
-#import lsst.afw.image as afwImage
-from lsst.obs.base import CameraMapper, MakeRawVisitInfo
+import lsst.obs.base.yamlCamera as yamlCamera
+from lsst.obs.base import CameraMapper, MakeRawVisitInfoViaObsInfo
 
-from .ztf import Ztf
+from .translators.ztf import ZtfTranslator
 
-__all__ = ["ZtfMapper"]
+__all__ = ["ZtfMapper", "ZtfMakeRawVisitInfo"]
 
-class ZtfMakeRawVisitInfo(MakeRawVisitInfo):
-    """functor to make a VisitInfo from the FITS header of a raw image
-    """
 
-    def setArgDict(self, md, argDict):
-        """Fill an argument dict with arguments for makeVisitInfo and pop associated metadata
-        """
-        super(ZtfMakeRawVisitInfo, self).setArgDict(md, argDict)
+class ZtfMakeRawVisitInfo(MakeRawVisitInfoViaObsInfo):
+    """Make a VisitInfo from the FITS header of a raw image."""
 
-    def getDateAvg(self, md, exposureTime):
-        """Return date at the middle of the exposure
-
-        @param[in,out] md  metadata, as an lsst.daf.base.PropertyList or PropertySet;
-            items that are used are stripped from the metadata
-            (except TIMESYS, because it may apply to more than one other keyword).
-        @param[in] exposureTime  exposure time (sec)
-        """
-        dateObs = self.popIsoDate(md, "DATE-OBS")
-        return self.offsetDate(dateObs, 0.5*exposureTime)
 
 class ZtfMapper(CameraMapper):
     packageName = 'obs_ztf'
+
     MakeRawVisitInfoClass = ZtfMakeRawVisitInfo
+    translatorClass = ZtfTranslator
 
     def __init__(self, **kwargs):
         policyFile = dafPersistence.Policy.defaultPolicyFile(self.packageName, "ztfMapper.yaml", "policy")
@@ -64,13 +51,28 @@ class ZtfMapper(CameraMapper):
         afwImageUtils.defineFilter('R', 0.0, alias=['r'])
         afwImageUtils.defineFilter('i', 0.0, alias=[])
 
-    def _makeCamera(self, policy, repositoryDir):
-        """Make a camera (instance of lsst.afw.cameraGeom.Camera) describing the camera geometry
+    @classmethod
+    def _makeCamera(cls, policy=None, repositoryDir=None, cameraYamlFile=None):
+        """Make a camera  describing the camera geometry.
+
+        policy : ignored
+        repositoryDir : ignored
+        cameraYamlFile : `str`
+           The full path to a yaml file to be passed to `yamlCamera.makeCamera`
+
+        Returns
+        -------
+        camera : `lsst.afw.cameraGeom.Camera`
+            Camera geometry.
         """
-        return Ztf()
+
+        if not cameraYamlFile:
+            cameraYamlFile = os.path.join(lsst.utils.getPackageDir(cls.packageName), "policy", "ztf.yaml")
+
+        return yamlCamera.makeCamera(cameraYamlFile)
 
     def _extractDetectorName(self, dataId):
-        return 'E2V 6k'
+        return "%02d" % (dataId["ccd"])
 
     def _computeCcdExposureId(self, dataId):
         """Compute the 64-bit (long) identifier for a CCD exposure.

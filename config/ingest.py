@@ -1,12 +1,14 @@
 from lsst.obs.ztf.ingest import ZtfParseTask
 config.parse.retarget(ZtfParseTask)
+config.parse.hdu = 0
+
 config.parse.translation = {
     # translate_visit
-    'field': 'FIELDID',
+    'field': 'FRAMENUM',
     # translate_filter
-    # translate_dateObs
+    # translate_dayObs
     ### 'date': 'DATE-OBS',
-    'expTime': 'AEXPTIME',
+    'expTime': 'EXPTIME',
     'ccd': 'CCD_ID',
     # translate_imageType
     'filename': 'ORIGNAME',
@@ -14,7 +16,7 @@ config.parse.translation = {
 config.parse.translators = {
     'visit': 'translate_visit',
     'filter': 'translate_filter',       # defined in base class
-    'dateObs': 'translate_dateObs',
+    'dateObs': 'translate_dayObs',
     'imageType': 'translate_imageType',
 }
 config.parse.defaults = {
