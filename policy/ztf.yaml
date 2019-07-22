@@ -35,7 +35,7 @@ AMP : &AMP
     # trimmed
     hdu : None                          # HDU in the file
 
-    flipXY :     [False, False]
+    flipXY :     [True, True]
     perAmpData : True                  # is the amp data split across multiple HDUs/Files?
 
     #                         [[x0,  y0], [xSize, ySize]]
@@ -89,21 +89,21 @@ Detector : &Detector
       A0 : &A0
         <<: *AMP
         hdu : 1
-        ixy : [0, 0]
+        ixy : [1, 1]
         readCorner : LL
       A1 : &A1
         <<: *A0
         hdu : 2
-        ixy : [1, 0]
+        ixy : [0, 1]
         readCorner : LR
       A2 : &A2
         <<: *A0
         hdu : 3
-        ixy : [1, 1]
+        ixy : [0, 0]
       A3 : &A3
         <<: *A1
         hdu : 4
-        ixy : [0, 1]
+        ixy : [1, 0]
 #
 # Define our specific devices
 #
@@ -123,20 +123,20 @@ CCDs : &CCDs
         offset : [93.08, -93.32]       # mm
 
         amplifiers:
-            "02":
+            "00":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "03":
+            "01":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "01":
+            "02":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "00":
-                <<: *A1
+            "03":
+                <<: *A3
                 gain : 1.00
                 readNoise : 2.0
     '02' :
@@ -146,19 +146,19 @@ CCDs : &CCDs
         offset : [31.03, -93.32]         # mm
 
         amplifiers:
-            "02":
+            "04":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "03":
+            "05":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "01":
+            "06":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "00":
+            "07":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -169,19 +169,19 @@ CCDs : &CCDs
         offset : [-31.03, -93.32]         # mm
 
         amplifiers:
-            "10":
+            "08":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "11":
+            "09":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "09":
+            "10":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "08":
+            "11":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -192,19 +192,19 @@ CCDs : &CCDs
         offset : [-93.08, -93.32]       # mm
 
         amplifiers:
-            "14":
+            "12":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "15":
+            "13":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "13":
+            "14":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "12":
+            "15":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
@@ -217,19 +217,19 @@ CCDs : &CCDs
         offset : [93.08, -31.11]       # mm
 
         amplifiers:
-            "18":
+            "16":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "19":
+            "17":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "17":
+            "18":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "16":
+            "19":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
@@ -240,19 +240,19 @@ CCDs : &CCDs
         offset : [31.03, -31.11]         # mm
 
         amplifiers:
-            "22":
+            "20":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "23":
+            "21":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "21":
+            "22":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "20":
+            "23":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -263,19 +263,19 @@ CCDs : &CCDs
         offset : [-31.03, -31.11]         # mm
 
         amplifiers:
-            "26":
+            "24":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "27":
+            "25":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "25":
+            "26":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "24":
+            "27":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -286,19 +286,19 @@ CCDs : &CCDs
         offset : [-93.08, -31.11]       # mm
 
         amplifiers:
-            "30":
+            "28":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "31":
+            "29":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "29":
+            "30":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "28":
+            "31":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
@@ -311,19 +311,19 @@ CCDs : &CCDs
         offset : [93.08,  31.11]       # mm
 
         amplifiers:
-            "18":
+            "32":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "19":
+            "33":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "17":
+            "34":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "16":
+            "35":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
@@ -334,19 +334,19 @@ CCDs : &CCDs
         offset : [31.03,  31.11]         # mm
 
         amplifiers:
-            "22":
+            "36":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "23":
+            "37":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "21":
+            "38":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "20":
+            "39":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -357,19 +357,19 @@ CCDs : &CCDs
         offset : [-31.03,  31.11]         # mm
 
         amplifiers:
-            "26":
+            "40":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "27":
+            "41":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "25":
+            "42":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "24":
+            "43":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -380,19 +380,19 @@ CCDs : &CCDs
         offset : [-93.08,  31.11]       # mm
 
         amplifiers:
-            "30":
+            "44":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "31":
+            "45":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "29":
+            "46":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "28":
+            "47":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
@@ -405,19 +405,19 @@ CCDs : &CCDs
         offset : [93.08,  93.32]       # mm
 
         amplifiers:
-            "18":
+            "48":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "19":
+            "49":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "17":
+            "50":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "16":
+            "51":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
@@ -428,19 +428,19 @@ CCDs : &CCDs
         offset : [31.03,  93.32]         # mm
 
         amplifiers:
-            "22":
+            "52":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "23":
+            "53":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "21":
+            "54":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "20":
+            "55":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -451,19 +451,19 @@ CCDs : &CCDs
         offset : [-31.03,  93.32]         # mm
 
         amplifiers:
-            "26":
+            "56":
                 <<: *A0
                 gain : 1.0
                 readNoise : 1.0
-            "27":
+            "57":
                 <<: *A1
                 gain : 1.0
                 readNoise : 1.0
-            "25":
+            "58":
                 <<: *A2
                 gain : 1.0
                 readNoise : 1.0
-            "24":
+            "59":
                 <<: *A3
                 gain : 1.0
                 readNoise : 2.0
@@ -474,19 +474,19 @@ CCDs : &CCDs
         offset : [-93.08,  93.32]       # mm
 
         amplifiers:
-            "30":
+            "60":
                 <<: *A0
                 gain : 1.00
                 readNoise : 2.0
-            "31":
+            "61":
                 <<: *A1
                 gain : 1.00
                 readNoise : 2.0
-            "29":
+            "62":
                 <<: *A2
                 gain : 1.00
                 readNoise : 2.0
-            "28":
+            "63":
                 <<: *A3
                 gain : 1.00
                 readNoise : 2.0
