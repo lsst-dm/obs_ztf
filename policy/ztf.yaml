@@ -40,15 +40,10 @@ AMP : &AMP
 
     #                         [[x0,  y0], [xSize, ySize]]
     # real raw; untested
-    rawBBox                 : [[0,    0], [3072,   3080]] # total size of one amp's raw data
-    rawDataBBox             : [[0,    0], [3072,   3080]] # data region in raw data
+    rawBBox                 : [[0,    0], [3102,   3080]] # total size of one amp's raw data
+    rawDataBBox             : [[30,   0], [3072,   3080]] # data region in raw data
     rawSerialPrescanBBox    : [[0,    0], [0,         0]] # serial prescan
-    rawSerialOverscanBBox   : [[0,    0], [0,         0]] # serial overscan
-
-    #rawBBox                 : [[0,    0], [3072,   3080]] # total size of one amp's raw data
-    #rawDataBBox             : [[0,    0], [3072,   3080]] # data region in raw data
-    #rawSerialPrescanBBox    : [[0,    0], [0,         0]] # serial prescan
-    #rawSerialOverscanBBox   : [[0,    0], [0,         0]] # serial overscan
+    rawSerialOverscanBBox   : [[0,    0], [30,     3080]] # serial overscan
     rawParallelPrescanBBox  : [[0,    0], [0,         0]] # pixels digitised before first parallel transfer
     rawParallelOverscanBBox : [[0,    0], [0,         0]] # parallel overscan
 
@@ -120,71 +115,71 @@ CCDs : &CCDs
         << : *Detector
         id : 1
         serial : '0x666'
-        offset : [93.08, -93.32]       # mm
+        offset : [93.08, -93.32]        # mm
 
         amplifiers:
             "00":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "01":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "02":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "03":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '02' :
         << : *Detector
         id : 2
         serial : '0x667'
-        offset : [31.03, -93.32]         # mm
+        offset : [31.03, -93.32]        # mm
 
         amplifiers:
             "04":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "05":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "06":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "07":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '03' :
         << : *Detector
         id : 3
         serial : '0x668'
-        offset : [-31.03, -93.32]         # mm
+        offset : [-31.03, -93.32]       # mm
 
         amplifiers:
             "08":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "09":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "10":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "11":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '04' :
         << : *Detector
         id : 4
@@ -194,91 +189,92 @@ CCDs : &CCDs
         amplifiers:
             "12":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "13":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "14":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "15":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
+
     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     # Row 2
     '05' :
         << : *Detector
         id : 5
         serial : '0x666'
-        offset : [93.08, -31.11]       # mm
+        offset : [93.08, -31.11]        # mm
 
         amplifiers:
             "16":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "17":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "18":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "19":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '06' :
         << : *Detector
         id : 6
         serial : '0x667'
-        offset : [31.03, -31.11]         # mm
+        offset : [31.03, -31.11]        # mm
 
         amplifiers:
             "20":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "21":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "22":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "23":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '07' :
         << : *Detector
         id : 7
         serial : '0x668'
-        offset : [-31.03, -31.11]         # mm
+        offset : [-31.03, -31.11]       # mm
 
         amplifiers:
             "24":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "25":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "26":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "27":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '08' :
         << : *Detector
         id : 8
@@ -288,91 +284,92 @@ CCDs : &CCDs
         amplifiers:
             "28":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "29":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "30":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "31":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
+
     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     # Row 3
     '09' :
         << : *Detector
         id : 9
         serial : '0x670'
-        offset : [93.08,  31.11]       # mm
+        offset : [93.08,  31.11]        # mm
 
         amplifiers:
             "32":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "33":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "34":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "35":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '10' :
         << : *Detector
         id : 10
         serial : '0x671'
-        offset : [31.03,  31.11]         # mm
+        offset : [31.03,  31.11]        # mm
 
         amplifiers:
             "36":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "37":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "38":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "39":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '11' :
         << : *Detector
         id : 11
         serial : '0x672'
-        offset : [-31.03,  31.11]         # mm
+        offset : [-31.03,  31.11]       # mm
 
         amplifiers:
             "40":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "41":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "42":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "43":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '12' :
         << : *Detector
         id : 12
@@ -382,91 +379,92 @@ CCDs : &CCDs
         amplifiers:
             "44":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "45":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "46":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "47":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
+
     #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     # Row 4
     '13' :
         << : *Detector
         id : 13
         serial : '0x666'
-        offset : [93.08,  93.32]       # mm
+        offset : [93.08,  93.32]        # mm
 
         amplifiers:
             "48":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "49":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "50":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "51":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '14' :
         << : *Detector
         id : 14
         serial : '0x667'
-        offset : [31.03,  93.32]         # mm
+        offset : [31.03,  93.32]        # mm
 
         amplifiers:
             "52":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "53":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "54":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "55":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '15' :
         << : *Detector
         id : 15
         serial : '0x668'
-        offset : [-31.03,  93.32]         # mm
+        offset : [-31.03,  93.32]       # mm
 
         amplifiers:
             "56":
                 <<: *A0
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "57":
                 <<: *A1
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "58":
                 <<: *A2
-                gain : 1.0
-                readNoise : 1.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "59":
                 <<: *A3
-                gain : 1.0
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
     '16' :
         << : *Detector
         id : 16
@@ -476,17 +474,17 @@ CCDs : &CCDs
         amplifiers:
             "60":
                 <<: *A0
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "61":
                 <<: *A1
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "62":
                 <<: *A2
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
             "63":
                 <<: *A3
-                gain : 1.00
-                readNoise : 2.0
+                gain : 6.2              # ZTF nominal from header
+                readNoise : 10.0        # ZTF nominal from header
