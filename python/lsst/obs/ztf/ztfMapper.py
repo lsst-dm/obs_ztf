@@ -24,6 +24,7 @@ import lsst.utils
 import lsst.geom as geom
 import lsst.log
 import lsst.daf.persistence as dafPersistence
+import lsst.afw.image as afwImage
 import lsst.afw.image.utils as afwImageUtils
 import lsst.afw.geom as afwGeom
 import lsst.afw.cameraGeom as cameraGeom
@@ -211,6 +212,7 @@ class ZtfMapper(CameraMapper):
         # The composite objects don't seem to set these
         #
         for d in (self.mappings, self.exposures):
+            break                       # XXX
             d['raw'] = d['_raw']
         
         afwImageUtils.resetFilters()
@@ -249,6 +251,72 @@ class ZtfMapper(CameraMapper):
         visit = dataId['visit']
         return int(visit)
 
+    def bypass_raw(self, datasetType, pythonType, location, dataId):
+        """Magic method that is called automatically if it exists.
+        """
+        from lsst.ip.isr import AssembleCcdTask
+
+        config = AssembleCcdTask.ConfigClass()
+        config.doTrim = False
+
+        assembleTask = AssembleCcdTask(config=config)
+        logger = lsst.log.Log.getLogger("ZtfMapper")
+
+        #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+        assert len(location.getLocations()) == 1  # KTL says that this is always true, but check
+        relativeFileName = location.getLocations()[0]
+        if location.storage.exists(relativeFileName):
+            fileName = location.storage.locationWithRoot(relativeFileName)
+            data = afwImage.ImageF(fileName, hdu=1)
+            data = pythonType(afwImage.MaskedImageF(data))
+        else:
+            raise IOError(f"Unable to find {relativeFileName}")
+
+        # Get the Detector
+        self._setCcdDetector(data, dataId, trimmed=False)
+        detector = data.getDetector()
+        #
+        # Read all the data
+        #
+        ampDict = {}
+        for i, amp in enumerate(detector, 1):
+            ampExp = pythonType(amp.getRawBBox())
+            ampExp.setDetector(detector)
+            ampDict[amp.getName()] = ampExp
+
+            hdu = amp.get('hdu')
+            if i == 1:
+                assert i == hdu         # don't read twice
+                data = data.image
+            else:
+                data = afwImage.ImageF(fileName, hdu=hdu)
+
+            ampExp[amp.getRawDataBBox()].image = data
+
+        exposure = assembleTask.assembleCcd(ampDict)
+
+        md = afwImage.readMetadata(fileName, hdu=0)
+        fix_header(md, translator_class=self.translatorClass)
+        exposure.setMetadata(md)
+
+        visitInfo = ZtfMakeRawVisitInfo(logger)(md)
+        exposure.getInfo().setVisitInfo(visitInfo)
+
+        boresight = visitInfo.getBoresightRaDec()
+        rotangle = visitInfo.getBoresightRotAngle()
+
+        if boresight.isFinite():
+            exposure.setWcs(getWcsFromDetector(exposure.getDetector(), boresight,
+                                               90*geom.degrees - rotangle))
+        else:
+            # Should only warn for science observations but VisitInfo does not know
+            logger.warn("Unable to set WCS for %s from header as RA/Dec/Angle are unavailable" %
+                        (dataId,))
+
+        return exposure
+        
+    
     def query_raw_amp(self, format, dataId):
         """Return a list of tuples of values of the fields specified in
         format, in order.
@@ -305,7 +373,7 @@ class ZtfMapper(CameraMapper):
     # as necessary
     #
 
-    def query_raw(self, *args, **kwargs):
+    def XXXquery_raw(self, *args, **kwargs):
         """Magic method that is called automatically if it exists.
 
         This code redirects the call to the right place, necessary because of
@@ -313,7 +381,7 @@ class ZtfMapper(CameraMapper):
         """
         return self.query__raw(*args, **kwargs)
 
-    def map_raw_md(self, *args, **kwargs):
+    def XXXmap_raw_md(self, *args, **kwargs):
         """Magic method that is called automatically if it exists.
 
         This code redirects the call to the right place, necessary because of
@@ -321,7 +389,7 @@ class ZtfMapper(CameraMapper):
         """
         return self.map__raw_md(*args, **kwargs)
 
-    def map_raw_filename(self, *args, **kwargs):
+    def XXXmap_raw_filename(self, *args, **kwargs):
         """Magic method that is called automatically if it exists.
 
         This code redirects the call to the right place, necessary because of
@@ -329,7 +397,7 @@ class ZtfMapper(CameraMapper):
         """
         return self.map__raw_filename(*args, **kwargs)
 
-    def bypass_raw_filename(self, *args, **kwargs):
+    def XXXbypass_raw_filename(self, *args, **kwargs):
         """Magic method that is called automatically if it exists.
 
         This code redirects the call to the right place, necessary because of
@@ -337,7 +405,7 @@ class ZtfMapper(CameraMapper):
         """
         return self.bypass__raw_filename(*args, **kwargs)
 
-    def map_raw_visitInfo(self, *args, **kwargs):
+    def XXXmap_raw_visitInfo(self, *args, **kwargs):
         """Magic method that is called automatically if it exists.
 
         This code redirects the call to the right place, necessary because of
@@ -345,7 +413,7 @@ class ZtfMapper(CameraMapper):
         """
         return self.map__raw_visitInfo(*args, **kwargs)
 
-    def bypass_raw_visitInfo(self, datasetType, pythonType, location, dataId):
+    def XXXbypass_raw_visitInfo(self, datasetType, pythonType, location, dataId):
         fileName = location.getLocationsWithRoot()[0]
         mat = re.search(r"\[(\d+)\]$", fileName)
         if mat:

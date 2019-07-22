@@ -29,17 +29,17 @@ defaultSubLevels:
 # appear below as a partial dataset definition.
 
 exposures:
-#  raw:
-#    python: lsst.afw.image.ExposureF
-#    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits'
-  _raw:
+  raw:
+    python: lsst.afw.image.ExposureF
+    template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits'
+  XXX_raw:
     level: Ccd
     persistable: PropertyList
     python: lsst.daf.base.PropertyList
     storage: FitsStorage
     tables: raw
     template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits[0]'
-  raw:
+  XXXraw:
     assembler: lsst.obs.ztf.ztfMapper.assemble_raw
     python: lsst.afw.image.DecoratedImageF
     composite:
