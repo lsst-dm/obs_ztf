@@ -100,9 +100,16 @@ class ZtfMapper(CameraMapper):
         super(ZtfMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
 
         afwImageUtils.resetFilters()
+        afwImageUtils.defineFilter('NONE', 0.0)
         afwImageUtils.defineFilter('ZTF_g', 0.0, alias=['g'])
         afwImageUtils.defineFilter('ZTF_r', 0.0, alias=['r'])
         afwImageUtils.defineFilter('ZTF_i', 0.0, alias=['i'])
+
+        ZtfMapper._nbit_tract = 16
+        ZtfMapper._nbit_patch = 5
+        ZtfMapper._nbit_filter = 6
+
+        ZtfMapper._nbit_id = 64 - (ZtfMapper._nbit_tract + 2*ZtfMapper._nbit_patch + ZtfMapper._nbit_filter)
 
     @classmethod
     def _makeCamera(cls, policy=None, repositoryDir=None, cameraYamlFile=None):
@@ -158,8 +165,7 @@ class ZtfMapper(CameraMapper):
             raise IOError(f"Unable to find {relativeFileName}")
 
         # Get the Detector
-        self._setCcdDetector(data, dataId, trimmed=False)
-        detector = data.getDetector()
+        detector = self.camera[self._extractDetectorName(dataId)]
         #
         # Read all the data
         #
@@ -251,3 +257,82 @@ class ZtfMapper(CameraMapper):
                     dids.append(tuple(did))
 
         return dids
+
+    def _computeCcdExposureId(self, dataId):
+        """Compute the 64-bit (long) identifier for a CCD exposure.
+
+        Parameters
+        ----------
+        dataId : `dict`
+            Data identifier including visit
+
+        Returns
+        -------
+        id : `int`
+            Integer identifier for a CCD exposure.
+        """
+        try:
+            visit = dataId["visit"]
+            detector = dataId["ccd"]
+        except Exception:
+            raise KeyError(f"Require a visit and ccd to calculate detector exposure ID. Got: {dataId}")
+
+        return 100*visit + detector
+
+    def bypass_ccdExposureId(self, datasetType, pythonType, location, dataId):
+        return self._computeCcdExposureId(dataId)
+
+    def bypass_ccdExposureId_bits(self, datasetType, pythonType, location, dataId):
+        """How many bits are required for the maximum exposure ID"""
+        return 31  # max visit ~ 21400000 (a 30s cadence every 10-hour night for 20 years)
+    
+    def _computeCoaddExposureId(self, dataId, singleFilter):
+        """Compute the 64-bit (long) identifier for a coadd.
+
+        Parameters
+        ----------
+        dataId : `dict`
+            Data identifier with tract and patch.
+        singleFilter : `bool`
+            True means the desired ID is for a single-filter coadd, in which
+            case ``dataId`` must contain filter.
+        """
+
+        tract = int(dataId['tract'])
+        if tract < 0 or tract >= 2**ZtfMapper._nbit_tract:
+            raise RuntimeError('tract not in range [0,%d)' % (2**ZtfMapper._nbit_tract))
+        patchX, patchY = [int(patch) for patch in dataId['patch'].split(',')]
+        for p in (patchX, patchY):
+            if p < 0 or p >= 2**ZtfMapper._nbit_patch:
+                raise RuntimeError('patch component not in range [0, %d)' % 2**ZtfMapper._nbit_patch)
+        oid = (((tract << ZtfMapper._nbit_patch) + patchX) << ZtfMapper._nbit_patch) + patchY
+        if singleFilter:
+            return (oid << ZtfMapper._nbit_filter) + afwImage.Filter(dataId['filter']).getId()
+        return oid
+
+    def bypass_deepCoaddId_bits(self, *args, **kwargs):
+        """The number of bits used up for patch ID bits."""
+        return 64 - ZtfMapper._nbit_id
+
+    def bypass_deepCoaddId(self, datasetType, pythonType, location, dataId):
+        return self._computeCoaddExposureId(dataId, True)
+
+    def bypass_dcrCoaddId_bits(self, datasetType, pythonType, location, dataId):
+        return self.bypass_deepCoaddId_bits(datasetType, pythonType, location, dataId)
+
+    def bypass_dcrCoaddId(self, datasetType, pythonType, location, dataId):
+        return self.bypass_deepCoaddId(datasetType, pythonType, location, dataId)
+
+    def bypass_deepMergedCoaddId_bits(self, *args, **kwargs):
+        """The number of bits used up for patch ID bits."""
+        return 64 - ZtfMapper._nbit_id
+
+    def bypass_deepMergedCoaddId(self, datasetType, pythonType, location, dataId):
+        return self._computeCoaddExposureId(dataId, False)
+
+    def bypass_dcrMergedCoaddId_bits(self, *args, **kwargs):
+        """The number of bits used up for patch ID bits."""
+        return self.bypass_deepMergedCoaddId_bits(*args, **kwargs)
+
+    def bypass_dcrMergedCoaddId(self, datasetType, pythonType, location, dataId):
+        return self.bypass_deepMergedCoaddId(datasetType, pythonType, location, dataId)
