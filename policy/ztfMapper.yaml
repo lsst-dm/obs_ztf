@@ -37,7 +37,9 @@ exposures:
   icExp:
     template: 'icExp/%(filter)s/ICEXP-%(visit)07d-%(ccd)02d.fits'
   calexp:
-    template: 'calexp/%(filter)s/CORR-%(visit)07d-%(ccd)02d.fits'
+    template: 'corr/%(filter)s/CALEXP-%(visit)07d-%(ccd)02d.fits'
+  cal_ref_cat:
+    template: photo_astro_ref/%(pixel_id)s.fits
 
 calibrations:
   bias:
@@ -128,11 +130,11 @@ datasets:
     tables: raw
     template: '%(dateObs)s/%(field)06d/%(filter)s/ZTF-%(visit)07d-%(ccd)02d.fits[0]'
   icExpBackground:
-    template: '%(pointing)05d/%(filter)s/corr/ICEXPBKGD-%(visit)07d-%(ccd)02d.fits'
+    template: 'icExpBackground/%(filter)s/ICEXPBKGD-%(visit)07d-%(ccd)02d.fits'
   calexpBackground:
-    template: '%(pointing)05d/%(filter)s/corr/BKGD-%(visit)07d-%(ccd)02d.fits'
+    template: 'corr/%(filter)s/BKGD-%(visit)07d-%(ccd)02d.fits'
   src:
-    template: '%(pointing)05d/%(filter)s/output/SRC-%(visit)07d-%(ccd)02d.fits'
+    template: 'output/%(filter)s/SRC-%(visit)07d-%(ccd)02d.fits'
   calibrated_src:
     persistable: SourceCatalog
     python: lsst.afw.table.SourceCatalog
@@ -140,7 +142,7 @@ datasets:
     tables:
     - raw
     - raw_visit
-    template: '%(pointing)05d/%(filter)s/output/%(tract)04d/CALSRC-%(visit)07d-%(ccd)02d.fits'
+    template: 'output/%(filter)s/%(tract)04d/CALSRC-%(visit)07d-%(ccd)02d.fits'
   transformed_src:
     persistable: SourceCatalog
     python: lsst.afw.table.BaseCatalog
@@ -148,7 +150,7 @@ datasets:
     tables:
     - raw
     - raw_visit
-    template: '%(pointing)05d/%(filter)s/output/TRSRC-%(visit)07d-%(ccd)02d.fits'
+    template: 'pointing/%(filter)s/output/TRSRC-%(visit)07d-%(ccd)02d.fits'
   icMatch:
     persistable: BaseCatalog
     python: lsst.afw.table.BaseCatalog
@@ -156,25 +158,25 @@ datasets:
     tables:
     - raw
     - raw_visit
-    template: '%(pointing)05d/%(filter)s/output/MATCH-%(visit)07d-%(ccd)02d.fits'
+    template: 'pointing/%(filter)s/output/MATCH-%(visit)07d-%(ccd)02d.fits'
   srcMatch:
-    template: '%(pointing)05d/%(filter)s/output/SRCMATCH-%(visit)07d-%(ccd)02d.fits'
+    template: 'pointing/%(filter)s/output/SRCMATCH-%(visit)07d-%(ccd)02d.fits'
   srcMatchFull:
-    template: '%(pointing)05d/%(filter)s/output/SRCMATCHFULL-%(visit)07d-%(ccd)02d.fits'
+    template: 'pointing/%(filter)s/output/SRCMATCHFULL-%(visit)07d-%(ccd)02d.fits'
   icSrc:
-    template: '%(pointing)05d/%(filter)s/output/ICSRC-%(visit)07d-%(ccd)02d.fits'
+    template: 'pointing/%(filter)s/output/ICSRC-%(visit)07d-%(ccd)02d.fits'
   photoCalib:
     template: jointcal-results/%(tract)04d/photoCalib-%(visit)07d-%(ccd)02d.fits
   log:
     persistable: None
     python: str
     storage: TextStorage
-    template: '%(pointing)05d/%(filter)s/logs/run.log'
+    template: 'pointing/%(filter)s/logs/run.log'
   logDir:
     persistable: None
     python: str
     storage: None
-    template: '%(pointing)05d/%(filter)s/logs'
+    template: 'pointing/%(filter)s/logs'
   deepCoadd_diffsrc:
     persistable: SourceCatalog
     python: lsst.afw.table.SourceCatalog
@@ -192,15 +194,15 @@ datasets:
     python: lsst.afw.detection.Psf
     storage: BoostStorage
     tables: raw_skytile
-    template: '%(pointing)05d/%(filter)s/warp/WARPPSF-%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/warp/WARPPSF-%(visit)07d-%(ccd)02d.boost'
   processCcd_metadata:
-    template: '%(pointing)05d/%(filter)s/processCcd_metadata/%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/processCcd_metadata/%(visit)07d-%(ccd)02d.boost'
   isr_metadata:
-    template: '%(pointing)05d/%(filter)s/isr_metadata/%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/isr_metadata/%(visit)07d-%(ccd)02d.boost'
   characterizeImage_metadata:
-    template: '%(pointing)05d/%(filter)s/characterizeImage_metadata/%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/characterizeImage_metadata/%(visit)07d-%(ccd)02d.boost'
   calibrate_metadata:
-    template: '%(pointing)05d/%(filter)s/calibrate_metadata/%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/calibrate_metadata/%(visit)07d-%(ccd)02d.boost'
   transformSrcMeasurement_metadata:
     persistable: PropertySet
     python: lsst.daf.base.PropertySet
@@ -208,7 +210,7 @@ datasets:
     tables:
     - raw
     - raw_visit
-    template: '%(pointing)05d/%(filter)s/transformSrcMeasurement_metadata/%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/transformSrcMeasurement_metadata/%(visit)07d-%(ccd)02d.boost'
   singleFrameDriver_metadata:
     persistable: PropertySet
     python: lsst.daf.base.PropertySet
@@ -216,7 +218,7 @@ datasets:
     tables:
     - raw
     - raw_visit
-    template: '%(pointing)05d/%(filter)s/singleFrameDriver_metadata/%(visit)07d.boost'
+    template: 'pointing/%(filter)s/singleFrameDriver_metadata/%(visit)07d.boost'
   processStack_metadata:
     persistable: PropertySet
     python: lsst.daf.base.PropertySet
@@ -241,6 +243,6 @@ datasets:
   deepCoadd_calexp_background:
     template: deepCoadd-results/%(filter)s/%(tract)d/%(patch)s/det_bkgd-%(filter)s-%(tract)d-%(patch)s.fits
   forced_src:
-    template: '%(pointing)05d/%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)07d-%(ccd)02d.fits'
+    template: 'pointing/%(filter)s/tract%(tract)d/FORCEDSRC-%(visit)07d-%(ccd)02d.fits'
   forcedPhotCcd_metadata:
-    template: '%(pointing)05d/%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)07d-%(ccd)02d.boost'
+    template: 'pointing/%(filter)s/tract%(tract)d/forcedPhotCcd_metadata/%(visit)07d-%(ccd)02d.boost'
