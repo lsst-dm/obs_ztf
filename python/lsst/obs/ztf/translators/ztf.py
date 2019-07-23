@@ -60,7 +60,6 @@ class ZtfTranslator(FitsTranslator):
     name = "ZTF/Mosaic"
     """Name of this translation class"""
 
-
     _const_map = {
         "instrument": "ZTF/Mosaic",     # Supports the Mosaic Camera on ZTF
         "telescope": "ZTF",
@@ -79,10 +78,10 @@ class ZtfTranslator(FitsTranslator):
     _trivial_map = {
         "observation_id": ("OBSID", dict(default=None, checker=is_non_science)),
         "boresight_airmass": ("AIRMASS", dict(checker=is_non_science_or_lab)),
-        "physical_filter" : "FILTER",
+        "physical_filter": "FILTER",
         "object": ("OBJECT", dict(checker=is_non_science_or_lab, default="UNKNOWN")),
         "boresight_rotation_angle": ("TELRAD", dict(checker=is_non_science_or_lab,
-                                                      default=float("nan"), unit=u.deg)),
+                                                    default=float("nan"), unit=u.deg)),
     }
 
     DETECTOR_GROUP_NAME = _DETECTOR_GROUP_NAME

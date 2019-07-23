@@ -30,7 +30,7 @@ import lsst.afw.geom as afwGeom
 import lsst.afw.cameraGeom as cameraGeom
 import lsst.obs.base.yamlCamera as yamlCamera
 from astro_metadata_translator import fix_header
-from lsst.obs.base import CameraMapper, MakeRawVisitInfoViaObsInfo, bboxFromIraf
+from lsst.obs.base import CameraMapper, MakeRawVisitInfoViaObsInfo
 
 from .translators.ztf import ZtfTranslator
 
@@ -98,7 +98,7 @@ class ZtfMapper(CameraMapper):
                 lsst.log.Log.getLogger("ZtfCamMapper").warn("Unable to find valid calib root directory")
 
         super(ZtfMapper, self).__init__(policy, os.path.dirname(policyFile), **kwargs)
-        
+
         afwImageUtils.resetFilters()
         afwImageUtils.defineFilter('ZTF_g', 0.0, alias=['g'])
         afwImageUtils.defineFilter('ZTF_r', 0.0, alias=['r'])
@@ -146,7 +146,7 @@ class ZtfMapper(CameraMapper):
         assembleTask = AssembleCcdTask(config=config)
         logger = lsst.log.Log.getLogger("ZtfMapper")
 
-        #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+        # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
         assert len(location.getLocations()) == 1  # KTL says that this is always true, but check
         relativeFileName = location.getLocations()[0]
@@ -197,13 +197,10 @@ class ZtfMapper(CameraMapper):
             exposure.setWcs(getWcsFromDetector(exposure.getDetector(), boresight,
                                                90*geom.degrees - rotangle))
         else:
-            # Should only warn for science observations but VisitInfo does not know
-            logger.warn("Unable to set WCS for %s from header as RA/Dec/Angle are unavailable" %
-                        (dataId,))
+            logger.warn(f"Unable to set WCS for {dataId} from header as RA/Dec/Angle are unavailable")
 
         return exposure
-        
-    
+
     def query_raw_amp(self, format, dataId):
         """Return a list of tuples of values of the fields specified in
         format, in order.

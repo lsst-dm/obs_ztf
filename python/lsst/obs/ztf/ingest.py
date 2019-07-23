@@ -180,7 +180,6 @@ class ZtfParseTask(ParseTask):
 
         # Try to work it out from date of observation
         dateObs = self.observationInfo.datetime_begin
-        #dateObs -= TimeDelta(8*60*60, scale="tai", format="sec")
         dateObs.format = "iso"
         dateObs.out_subfmt = "date"  # YYYY-MM-DD format
         return str(dateObs)
