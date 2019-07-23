@@ -12,6 +12,7 @@ config.parse.translation = {
     'ccd': 'CCD_ID',
     # translate_imageType
     'filename': 'ORIGNAME',
+    'taiObs': 'DATE-OBS',
 }
 config.parse.translators = {
     'visit': 'translate_visit',
@@ -27,6 +28,7 @@ config.register.columns = {
     'field': 'int',
     'filter': 'text',
     'dateObs': 'text',
+    'taiObs': 'text',
     'expTime': 'double',
     'ccd': 'int',
     'imageType': 'text',
