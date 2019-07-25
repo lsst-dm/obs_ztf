@@ -184,6 +184,24 @@ class ZtfTranslator(FitsTranslator):
     to_visit_id = to_exposure_id
 
     @cache_translation
+    def to_datetime_begin(self):
+        # Docstring will be inherited. Property defined in properties.py
+
+        if self.is_key_ok("SHUTOPEN"):
+            return self._from_fits_date("SHUTOPEN", u.s)
+        else:
+            return self._from_fits_date("DATE-OBS", mjd_key="MJD-OBS")
+
+    @cache_translation
+    def to_datetime_end(self):
+        # Docstring will be inherited. Property defined in properties.py
+
+        if self.is_key_ok("SHUTCLSD"):
+            return self._from_fits_date("SHUTCLSD", u.s)
+        else:
+            return self._from_fits_date("DATE-OBS", mjd_key="MJD-OBS")
+
+    @cache_translation
     def to_exposure_time(self):
         # Docstring will be inherited. Property defined in properties.py
         # Some data is missing a value for EXPTIME.
