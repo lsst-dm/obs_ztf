@@ -197,11 +197,9 @@ class ZtfMapper(CameraMapper):
         exposure.getInfo().setVisitInfo(visitInfo)
 
         boresight = visitInfo.getBoresightRaDec()
-        rotangle = visitInfo.getBoresightRotAngle()
-
         if boresight.isFinite():
             exposure.setWcs(getWcsFromDetector(exposure.getDetector(), boresight,
-                                               90*geom.degrees - rotangle))
+                                               180*geom.degrees, flipX=True))
         else:
             logger.warn(f"Unable to set WCS for {dataId} from header as RA/Dec/Angle are unavailable")
 

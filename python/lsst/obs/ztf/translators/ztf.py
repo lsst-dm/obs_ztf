@@ -73,6 +73,7 @@ class ZtfTranslator(FitsTranslator):
         "pressure": None,
         "temperature": None,
         "altaz_begin": None,
+        "boresight_rotation_angle": None,        
     }
 
     _trivial_map = {
@@ -80,8 +81,6 @@ class ZtfTranslator(FitsTranslator):
         "boresight_airmass": ("AIRMASS", dict(checker=is_non_science_or_lab)),
         "physical_filter": "FILTER",
         "object": ("OBJECT", dict(checker=is_non_science_or_lab, default="UNKNOWN")),
-        "boresight_rotation_angle": ("TELRAD", dict(checker=is_non_science_or_lab,
-                                                    default=float("nan"), unit=u.deg)),
     }
 
     DETECTOR_GROUP_NAME = _DETECTOR_GROUP_NAME
