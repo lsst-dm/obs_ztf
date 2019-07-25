@@ -207,57 +207,6 @@ class ZtfMapper(CameraMapper):
 
         return exposure
 
-    def query_raw_amp(self, format, dataId):
-        """Return a list of tuples of values of the fields specified in
-        format, in order.
-
-        Parameters
-        ----------
-        format : `list`
-            The desired set of keys.
-        dataId : `dict`
-            A possible-incomplete ``dataId``.
-
-        Returns
-        -------
-        fields : `list` of `tuple`
-            Values of the fields specified in ``format``.
-
-        Raises
-        ------
-        ValueError
-            The channel number requested in ``dataId`` is out of range.
-        """
-        nChannel = 4                    # number of possible channels, 1..nChannel
-
-        if "channel" in dataId:         # they specified a channel
-            dataId = dataId.copy()
-            channel = dataId.pop('channel')  # Do not include in query below
-            if channel > nChannel or channel < 1:
-                raise ValueError(f"Requested channel is out of range 0 < {channel} <= {nChannel}")
-            channels = [channel]
-        else:
-            channels = range(1, nChannel + 1)  # we want all possible channels
-
-        if "channel" in format:           # they asked for a channel, but we mustn't query for it
-            format = list(format)
-            channelIndex = format.index('channel')  # where channel values should go
-            format.pop(channelIndex)
-        else:
-            channelIndex = None
-
-        dids = []                       # returned list of dataIds
-        for value in self.query_raw(format, dataId):
-            if channelIndex is None:
-                dids.append(value)
-            else:
-                for c in channels:
-                    did = list(value)
-                    did.insert(channelIndex, c)
-                    dids.append(tuple(did))
-
-        return dids
-
     def _computeCcdExposureId(self, dataId):
         """Compute the 64-bit (long) identifier for a CCD exposure.
 
