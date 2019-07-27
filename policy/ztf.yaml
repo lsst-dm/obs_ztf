@@ -66,8 +66,8 @@ AMPBIAS : &AMPBIAS
 # A single detector
 #
 Detector : &Detector
-    detectorType : 0                    # e2v 6k, 10 micron pixels
-    refpos : [3072, 3080]               # centre of chip
+    detectorType : 0                    # e2v 6k, 15 micron pixels
+    refpos : [3071.5, 3079.5]           # centre of chip
     offset : [.nan, .nan]
     # 
     #      [[x0,  y0], [  x1,   y1]]    # == [xsize - 1, ysize - 1]; sorry
@@ -116,7 +116,7 @@ CCDs : &CCDs
         << : *Detector
         id : 1
         serial : '0x666'
-        offset : [146.92, -151.30]      # mm
+        offset : [148.07, -152.62]      # mm
 
         amplifiers:
             "00":
@@ -139,7 +139,7 @@ CCDs : &CCDs
         << : *Detector
         id : 2
         serial : '0x667'
-        offset : [48.97, -151.30]       # mm
+        offset : [48.893, -152.79]      # mm
 
         amplifiers:
             "04":
@@ -162,7 +162,7 @@ CCDs : &CCDs
         << : *Detector
         id : 3
         serial : '0x668'
-        offset : [-48.97, -151.30]      # mm
+        offset : [-50.05, -152.82]      # mm
 
         amplifiers:
             "08":
@@ -185,7 +185,7 @@ CCDs : &CCDs
         << : *Detector
         id : 4
         serial : '0x669'
-        offset : [-146.92, -151.30]     # mm
+        offset : [-149.30, -152.84]     # mm
 
         amplifiers:
             "12":
@@ -211,7 +211,7 @@ CCDs : &CCDs
         << : *Detector
         id : 5
         serial : '0x666'
-        offset : [146.92, -50.43]       # mm
+        offset : [148.12, -50.37]       # mm
 
         amplifiers:
             "16":
@@ -234,7 +234,7 @@ CCDs : &CCDs
         << : *Detector
         id : 6
         serial : '0x667'
-        offset : [48.97, -50.43]        # mm
+        offset : [48.78, -50.58]        # mm
 
         amplifiers:
             "20":
@@ -257,7 +257,7 @@ CCDs : &CCDs
         << : *Detector
         id : 7
         serial : '0x668'
-        offset : [-48.97, -50.43]       # mm
+        offset : [-50.05, -50.50]       # mm
 
         amplifiers:
             "24":
@@ -280,7 +280,7 @@ CCDs : &CCDs
         << : *Detector
         id : 8
         serial : '0x669'
-        offset : [-146.92, -50.43]      # mm
+        offset : [-149.47, -50.69]      # mm
 
         amplifiers:
             "28":
@@ -306,7 +306,7 @@ CCDs : &CCDs
         << : *Detector
         id : 9
         serial : '0x670'
-        offset : [146.92,  50.43]       # mm
+        offset : [148.05, 51.76]        # mm
 
         amplifiers:
             "32":
@@ -329,7 +329,7 @@ CCDs : &CCDs
         << : *Detector
         id : 10
         serial : '0x671'
-        offset : [48.97,  50.43]        # mm
+        offset : [48.71, 51.79]         # mm
 
         amplifiers:
             "36":
@@ -352,7 +352,7 @@ CCDs : &CCDs
         << : *Detector
         id : 11
         serial : '0x672'
-        offset : [-48.97,  50.43]       # mm
+        offset : [-50.02, 51.75]        # mm
 
         amplifiers:
             "40":
@@ -375,7 +375,7 @@ CCDs : &CCDs
         << : *Detector
         id : 12
         serial : '0x673'
-        offset : [-146.92,  50.43]      # mm
+        offset : [-149.17, 51.71]       # mm
 
         amplifiers:
             "44":
@@ -401,7 +401,7 @@ CCDs : &CCDs
         << : *Detector
         id : 13
         serial : '0x666'
-        offset : [146.92,  151.30]      # mm
+        offset : [148.13, 154.16]       # mm
 
         amplifiers:
             "48":
@@ -424,7 +424,7 @@ CCDs : &CCDs
         << : *Detector
         id : 14
         serial : '0x667'
-        offset : [48.97,  151.30]       # mm
+        offset : [48.77, 153.93]        # mm
 
         amplifiers:
             "52":
@@ -447,7 +447,7 @@ CCDs : &CCDs
         << : *Detector
         id : 15
         serial : '0x668'
-        offset : [-48.97,  151.30]      # mm
+        offset : [-50.11, 153.90]       # mm
 
         amplifiers:
             "56":
@@ -470,7 +470,7 @@ CCDs : &CCDs
         << : *Detector
         id : 16
         serial : '0x669'
-        offset : [-146.92,  151.30]     # mm
+        offset : [-149.47, 153.92]      # mm
 
         amplifiers:
             "60":
